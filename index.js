@@ -18,14 +18,17 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
 
+app.use(express.static(__dirname + '/css'));
+
 io.on('connection', (socket) => {
     socket.on('chat message', (msg) => {
       io.emit('chat message', msg)
     });
-
-    
+    socket.on('user typing', (bool) => {
+      console.log('user is typing');
+      io.emit('user typing');
+    });  
   });
-
 server.listen(3000, () => {
     console.log('listening on *:3000');
 });
